@@ -1,15 +1,16 @@
 
 import express, { Request, Response } from 'express'
-import { UserRoute } from './models/user/user.route'
+import { courseRoute } from './models/course/course.route'
+
 const app = express()
 
 app.use(express.json())
 
 
-app.use('/api/', UserRoute)
+app.use('/api/', courseRoute)
 
 app.get('/', (req : Request, res : Response) => {
-  res.send('this is my first mongoose assignment')
+  res.send('this is assignment 3')
 })
 
 
