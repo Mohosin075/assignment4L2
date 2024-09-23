@@ -13,15 +13,15 @@ const createCourse: RequestHandler = async (req, res, next) => {
       message: "Course created successfully",
       data: result,
     });
-  } catch (error) {
-    res.json({
-      success: false,
-      statusCode: 201,
-      message: "something went wrong",
-      error: error,
-    });
+  }catch(error) {
+    next(error)
   }
 };
+try{
+
+}catch(err){
+
+}
 
 export const CourseControllers = {
   createCourse,
