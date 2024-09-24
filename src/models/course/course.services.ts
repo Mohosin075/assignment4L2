@@ -11,7 +11,7 @@ const createCourseIntoDB = async (payload: TCourse) => {
 };
 
 const getAllCourseFromDB = async()=>{
-  const result = await Course.find();
+  const result = await Course.find().populate('categoryId');
   return result
 }
 
