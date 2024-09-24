@@ -5,8 +5,9 @@ import { CourseValidation } from "./course.validation";
 
 const router =  Router()
 
-router.post('/course', ValidateRequest(CourseValidation.createCourseValidationSchema), CourseControllers.createCourse);
+router.post('/courses', ValidateRequest(CourseValidation.createCourseValidationSchema), CourseControllers.createCourse);
 
-router.get('/course', CourseControllers.getAllCourse);
+router.get('/courses', CourseControllers.getAllCourse);
+router.get('/courses/:courseId/reviews', CourseControllers.getCourseByReviews);
 
 export const courseRoute = router
