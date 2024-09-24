@@ -31,7 +31,8 @@ const createReviewIntoDB = async(payload : TReview)=>{
 };
 
 const getAllReviewFromDB = async()=>{
-    const result = await Review.find().populate('courseId');
+    const result = await Review.find()
+    // .populate('courseId');
     return result
 };
 

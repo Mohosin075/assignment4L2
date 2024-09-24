@@ -9,5 +9,6 @@ router.post('/courses', ValidateRequest(CourseValidation.createCourseValidationS
 
 router.get('/courses', CourseControllers.getAllCourse);
 router.get('/courses/:courseId/reviews', CourseControllers.getCourseByReviews);
+router.get('/course/best', CourseControllers.getBestCourseByReviews);
 
 export const courseRoute = router

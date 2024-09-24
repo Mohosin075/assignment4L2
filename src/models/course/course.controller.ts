@@ -30,7 +30,6 @@ const getCourseByReviews= catchAsync(
     const {courseId} = req.params
     const result = await courseServices.getCourseByReviewsFromDB(courseId)
 
-
     SendResponse(res, {
       statusCode: 200,
       success: true,
@@ -40,8 +39,23 @@ const getCourseByReviews= catchAsync(
   }
 );
 
+
+const getBestCourseByReviews= catchAsync(
+  async (req: Request, res: Response) => {
+    const result = await courseServices.getBestCourseByReviewsFromDB()
+
+    SendResponse(res, {
+      statusCode: 200,
+      success: true,
+      message: "best course retrieved successfully",
+      data: result,
+    });
+  }
+);
+
 export const CourseControllers = {
   createCourse,
   getAllCourse,
-  getCourseByReviews
+  getCourseByReviews,
+  getBestCourseByReviews
 };
