@@ -1,7 +1,8 @@
-import { startSession, Types } from "mongoose";
+import { Query, startSession, Types } from "mongoose";
 import { Review } from "../review/review.model";
 import { TCourse } from "./course.interface";
 import { Course } from "./course.model";
+import QueryBuilder from "../../builder/QueryBuilder";
 
 const createCourseIntoDB = async (payload: TCourse) => {
   try {
@@ -12,10 +13,32 @@ const createCourseIntoDB = async (payload: TCourse) => {
   }
 };
 
-const getAllCourseFromDB = async () => {
-  const result = await Course.find().populate("categoryId");
+
+
+
+const getAllCourseFromDB = async (query : Record<string, unknown>) => {
+  // const result = await Course.find().populate("categoryId");
+
+  const coursesQuery = new QueryBuilder(Course.find(), query).filter().sort()
+  
+
+  // console.log(query);
+
+  const result = await coursesQuery.modelQuery.exec()
+
+  // console.log(result);
+ 
   return result;
 };
+
+
+
+
+
+
+
+
+
 
 const getCourseByReviewsFromDB = async (courseId: string) => {
   const session = await startSession();

@@ -4,7 +4,7 @@ import config from "../app/config";
 
 const globalErrorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
     let errorMessage = "Something went wrong!";
-    let message = "Something went wrong!";
+    let message = "";
     let statusCode = 400;
     let errorDetails = err
   

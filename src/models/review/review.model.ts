@@ -9,7 +9,9 @@ const ReviewSchema = new Schema<TReview>({
     },
     rating : {
         type : Number,
-        required : true
+        required : true,
+        max : 5,
+        min : 1
     },
     review : {
         type : String,
