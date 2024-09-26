@@ -17,16 +17,10 @@ const createCourseIntoDB = async (payload: TCourse) => {
 
 
 const getAllCourseFromDB = async (query : Record<string, unknown>) => {
-  // const result = await Course.find().populate("categoryId");
 
-  const coursesQuery = new QueryBuilder(Course.find(), query).filter().sort()
+  const coursesQuery = new QueryBuilder(Course.find(), query).filter().sort().paginate()
   
-
-  // console.log(query);
-
   const result = await coursesQuery.modelQuery.exec()
-
-  // console.log(result);
  
   return result;
 };

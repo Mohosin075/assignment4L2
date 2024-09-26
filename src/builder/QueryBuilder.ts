@@ -22,29 +22,59 @@ class QueryBuilder<T> {
       if (queryMapping[key]) {
         transformedQuery[queryMapping[key]] = query[key];
       } else {
-        transformedQuery[key] = query[key]; 
+        transformedQuery[key] = query[key];
       }
     }
 
     return transformedQuery;
   }
 
-  
   filter() {
-    const queryObj = {...this.query}
-    const exCludeFields = ['sortBy'];
+    const queryObj = { ...this.query };
+    const exCludeFields = ["sortBy", "sortOrder", "startDate", "endDate", "limit", "page"];
 
-    exCludeFields.forEach(el=>delete queryObj[el])
+    exCludeFields.forEach((el) => delete queryObj[el]);
 
     this.modelQuery = this.modelQuery.find(queryObj);
     return this;
-  };
+  }
 
+  sort() {
+    const sortAbleField = [
+      "title",
+      "price",
+      "startDate",
+      "endDate",
+      "language",
+      "durationInWeeks",
+    ];
 
-  sort(){
-    const sort =  (this?.query?.sortBy || '-price') as string
-    console.log(sort);
-    this.modelQuery = this.modelQuery.sort(sort)
+    const sort = (
+      sortAbleField.includes(this?.query?.sortBy as string)
+        ? this?.query?.sortBy
+        : "price"
+    ) as string;
+    const sortOrder = this?.query?.sortOrder === "asc" ? "" : "-";
+
+    const sortField = `${sortOrder}${sort}`;
+
+    this.modelQuery = this.modelQuery.sort(sortField);
+
+    return this;
+  }
+
+  paginate() {
+
+    const limit = (this.query.limit || 10) as number;
+    const page = (this.query.page || 1) as number;
+
+    
+    const skip = (page - 1) * limit
+
+    console.log(skip);
+
+    this.modelQuery = this.modelQuery.skip(skip).limit(limit)
+
     return this
   }
 }
