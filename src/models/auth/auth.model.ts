@@ -42,4 +42,4 @@ userSchema.post("save", function () {
   this.password = "";
 });
 
-export const User = model<TUser>("user", userSchema);
+export const User = model<TUser>("User", userSchema);

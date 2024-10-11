@@ -21,6 +21,7 @@ export type TCourse = {
   endDate: string;
   tags: TTags[];
   details: TDetails;
+  createdBy : Types.ObjectId;
 };
 
 export type TMeta = {

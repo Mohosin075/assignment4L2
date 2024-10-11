@@ -5,12 +5,10 @@ import { Course } from "./course.model";
 import QueryBuilder from "../../builder/QueryBuilder";
 
 const createCourseIntoDB = async (payload: TCourse) => {
-  try {
+
     const result = await Course.create(payload);
     return result;
-  } catch (error) {
-    throw error;
-  }
+
 };
 
 
@@ -18,7 +16,7 @@ const createCourseIntoDB = async (payload: TCourse) => {
 
 const getAllCourseFromDB = async (query : Record<string, unknown>) => {
 
-  const coursesQuery = new QueryBuilder(Course.find(), query).filter().sort().paginate()
+  const coursesQuery = new QueryBuilder(Course.find().populate('createdBy'), query).filter().sort().paginate()
   
   const result = await coursesQuery.modelQuery.exec();
 

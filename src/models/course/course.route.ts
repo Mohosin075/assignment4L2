@@ -2,14 +2,24 @@ import { Router } from "express";
 import { CourseControllers } from "./course.controller";
 import ValidateRequest from "../../middleware/ValidateRequest";
 import { CourseValidation } from "./course.validation";
+import { auth } from "../../middleware/auth";
 
-const router =  Router()
+const router = Router();
 
-router.post('/courses', ValidateRequest(CourseValidation.createCourseValidationSchema), CourseControllers.createCourse);
-router.put('/courses/:courseId', ValidateRequest(CourseValidation.updateCourseValidationSchema), CourseControllers.updateCourse);
+router.post(
+  "/",
+  auth('admin'),
+  ValidateRequest(CourseValidation.createCourseValidationSchema),
+  CourseControllers.createCourse
+);
+router.put(
+  "/:courseId",
+  ValidateRequest(CourseValidation.updateCourseValidationSchema),
+  CourseControllers.updateCourse
+);
 
-router.get('/courses', CourseControllers.getAllCourse);
-router.get('/courses/:courseId/reviews', CourseControllers.getCourseByReviews);
-router.get('/course/best', CourseControllers.getBestCourseByReviews);
+router.get("/", CourseControllers.getAllCourse);
+router.get("/:courseId/reviews", CourseControllers.getCourseByReviews);
+router.get("/best", CourseControllers.getBestCourseByReviews);
 
-export const courseRoute = router
+export const courseRoute = router;
