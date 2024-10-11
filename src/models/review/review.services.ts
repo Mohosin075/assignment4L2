@@ -19,10 +19,7 @@ const createReviewIntoDB = async(userData : JwtPayload, payload : TReview)=>{
         throw new Error('Course not found')
     }
 
-    const user = await User.findOne({email : userData?.email})
-
-
-    payload.createdBy = user?._id
+    payload.createdBy = userData?._id
 
     const result = await Review.create([payload], {session});
 

@@ -5,16 +5,9 @@ import { User } from "../auth/auth.model";
 
 const createCategoryIntoDB = async(userData :JwtPayload, payload : TCategory) =>{
 
-    const user = await User.findOne({email : userData?.email});
-
-    if(!user){
-        throw new Error('User not found!')
-    }
-
     
-    payload.createdBy = user?._id
+    payload.createdBy = userData?._id
 
-    console.log(user, payload);
 
     const result  = await Category.create(payload);
 
