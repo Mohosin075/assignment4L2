@@ -7,3 +7,9 @@ export type TUser = {
     password : string,
     role : UserRole
 }
+
+
+export type TLoinUser = {
+    username : string,
+    password : string
+}

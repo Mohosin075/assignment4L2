@@ -14,6 +14,19 @@ const createUser =catchAsync(async(req, res, next)=>{
     })
 });
 
+
+const loginUser =catchAsync(async(req, res, next)=>{
+    const result = await AuthServices.loginUser(req.body);
+
+    SendResponse(res, {
+        success: true,
+        statusCode : 200,
+        message : 'User login successfully.',
+        data : result
+    })
+});
+
 export const AuthControllers = {
-    createUser
+    createUser,
+    loginUser
 }

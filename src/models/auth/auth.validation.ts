@@ -27,6 +27,12 @@ const createUserValidationSchema = z.object({
     .default("user"),
 });
 
+const loginUserValidationSchema = z.object({
+  username: z.string(),
+  password: z.string(),
+});
+
 export const UserValidations = {
   createUserValidationSchema,
+  loginUserValidationSchema,
 };
