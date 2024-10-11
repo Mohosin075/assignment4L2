@@ -26,7 +26,23 @@ const loginUser =catchAsync(async(req, res, next)=>{
     })
 });
 
+const changePassword =catchAsync(async(req, res, next)=>{
+
+    const user = req?.user
+
+
+    const result = await AuthServices.changePassword(user , req.body);
+
+    SendResponse(res, {
+        success: true,
+        statusCode : 200,
+        message : 'Password change successfully.',
+        data : result
+    })
+});
+
 export const AuthControllers = {
     createUser,
-    loginUser
+    loginUser,
+    changePassword
 }

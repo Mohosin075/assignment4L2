@@ -21,7 +21,7 @@ const createUserValidationSchema = z.object({
         "Password must include at least one special character (@, $, !, %, *, ?, &, #)!",
     }),
   role: z
-    .enum([...USER_ROLE], {
+    .enum(["user", "admin"], {
       invalid_type_error: 'Role must be either "user" or "admin"!',
     })
     .default("user"),
@@ -32,7 +32,26 @@ const loginUserValidationSchema = z.object({
   password: z.string(),
 });
 
+const changePasswordValidationSchema = z.object({
+  currentPassword: z.string(),
+  newPassword: z
+    .string({ invalid_type_error: "Password should be a string!" })
+    .min(8, { message: "Password must be at least 8 characters long!" })
+    .regex(/[a-z]/, {
+      message: "Password must include at least one lowercase letter!",
+    })
+    .regex(/[A-Z]/, {
+      message: "Password must include at least one uppercase letter!",
+    })
+    .regex(/\d/, { message: "Password must include at least one number!" })
+    .regex(/[@$!%*?&#]/, {
+      message:
+        "Password must include at least one special character (@, $, !, %, *, ?, &, #)!",
+    }),
+});
+
 export const UserValidations = {
   createUserValidationSchema,
   loginUserValidationSchema,
+  changePasswordValidationSchema,
 };

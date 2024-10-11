@@ -1,8 +1,8 @@
 import config from "../../app/config";
-import { TLoinUser, TUser } from "./auth.interface";
+import { TChangePassword, TLoinUser, TUser } from "./auth.interface";
 import { User } from "./auth.model";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 
 const createUser = async (payload: TUser) => {
   const result = await User.create(payload);
@@ -21,7 +21,7 @@ const loginUser = async (payload: TLoinUser) => {
   const isPasswordMatched = await bcrypt.compare(password, user?.password);
 
   if (!isPasswordMatched) {
-    throw new Error(`Password in incorrect!`);
+    throw new Error(`Password is incorrect!`);
   }
 
   const { _id, role, email } = user;
@@ -47,7 +47,42 @@ const loginUser = async (payload: TLoinUser) => {
   };
 };
 
+const changePassword = async (
+  userData: JwtPayload,
+  payload: TChangePassword
+) => {
+  const user = await User.findById(userData._id).select("+password");
+
+  const isPasswordMatched = await bcrypt.compare(
+    payload.currentPassword,
+    user?.password as string
+  );
+
+  if (!isPasswordMatched) {
+    throw new Error(`Password is incorrect!`);
+  }
+
+  const hashedPass = await bcrypt.hash(
+    payload.newPassword,
+    Number(config.salt_round)
+  );
+
+  const updatedDoc = await User.findByIdAndUpdate(
+    user?._id,
+    {
+      password: hashedPass,
+    },
+    {
+      new: true,
+      runValidators : true
+    }
+  );
+
+  return updatedDoc
+};
+
 export const AuthServices = {
   createUser,
   loginUser,
+  changePassword,
 };
