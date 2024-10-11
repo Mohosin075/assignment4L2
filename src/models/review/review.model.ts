@@ -1,4 +1,4 @@
-import { model, Schema } from "mongoose";
+import mongoose, { model, Schema } from "mongoose";
 import { TReview } from "./review.interface";
 
 const ReviewSchema = new Schema<TReview>({
@@ -16,7 +16,13 @@ const ReviewSchema = new Schema<TReview>({
     review : {
         type : String,
         required : true
+    },
+    createdBy : {
+        type : mongoose.Types.ObjectId,
+        ref : 'User'
     }
+},{
+    timestamps : true
 });
 
 export const Review = model<TReview>('Review', ReviewSchema);

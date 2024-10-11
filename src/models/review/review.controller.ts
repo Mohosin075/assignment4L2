@@ -4,7 +4,7 @@ import SendResponse from "../../utils/sendResponse";
 import { ReviewServices } from "./review.services";
 
 const createReview = catchAsync(async(req : Request, res : Response, next : NextFunction) =>{
-    const result = await ReviewServices.createReviewIntoDB(req.body)
+    const result = await ReviewServices.createReviewIntoDB(req.user, req.body)
 
     SendResponse(res, {
         success : true,
