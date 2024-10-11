@@ -11,7 +11,7 @@ const app = express();
 app.use(express.json());
 
 app.use("/api/courses", courseRoute);
-app.use("/api/", categoryRoutes);
+app.use("/api/category", categoryRoutes);
 app.use("/api/", ReviewRoutes);
 app.use("/api/auth", AuthRoutes);
 

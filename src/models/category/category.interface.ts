@@ -1,4 +1,6 @@
+import { Types } from "mongoose";
 
 export type TCategory = {
-    name : string
+    name : string,
+    createdBy? : Types.ObjectId
 };
