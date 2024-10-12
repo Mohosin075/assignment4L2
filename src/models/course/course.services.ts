@@ -22,11 +22,25 @@ const getAllCourseFromDB = async (query: Record<string, unknown>) => {
 
   const result = await coursesQuery.modelQuery.exec();
 
-  const meta: TMeta = {
-    limit: Number(query?.limit),
-    page: Number(query?.page),
-    total: result?.length ? result?.length : 0,
+  // const meta: TMeta = {
+  //   limit: Number(query?.limit) && Number(query?.limit),
+  //   page: Number(query?.page) && Number(query?.page),
+  //   total: result?.length ? result?.length : 0,
+  // };
+
+  let meta: TMeta = {
+    total : 0
   };
+
+  if (query?.limit) {
+    meta.limit = Number(query?.limit);
+  }
+  if (query?.page) {
+    meta.page = Number(query?.page);
+  }
+  if (result?.length) {
+    meta.total = Number(result?.length) ;
+  }
 
   return { meta, result };
 };
@@ -36,13 +50,11 @@ const updateCourseIntoDB = async (
   id: string,
   payload: Partial<TCourse>
 ) => {
-
   const course = await Course.findById(id);
 
-  if(!course){
-    throw new Error('Course not found!')
+  if (!course) {
+    throw new Error("Course not found!");
   }
-
 
   payload.createdBy = userData?._id;
 
@@ -92,7 +104,7 @@ const updateCourseIntoDB = async (
 
   const result = await Course.findByIdAndUpdate(id, modifiedData, {
     new: true,
-    runValidators : true
+    runValidators: true,
   });
 
   console.log(result);
@@ -106,12 +118,16 @@ const getCourseByReviewsFromDB = async (courseId: string) => {
     session.startTransaction();
     const course = await Course.findOne({
       _id: new Types.ObjectId(courseId),
-    }).populate('createdBy').session(session);
+    })
+      .populate("createdBy")
+      .session(session);
     if (!course) {
       throw new Error("Course not found");
     }
 
-    const reviews = await Review.find({ courseId }).populate('createdBy').session(session);
+    const reviews = await Review.find({ courseId })
+      .populate("createdBy")
+      .session(session);
 
     if (!reviews) {
       throw new Error("Review not found");
@@ -143,7 +159,9 @@ const getBestCourseByReviewsFromDB = async () => {
 
   const bestCourseById = courses && courses[0];
 
-  const course = await Course.findById(bestCourseById._id).populate('createdBy');
+  const course = await Course.findById(bestCourseById._id).populate(
+    "createdBy"
+  );
 
   const { averageRating, totalRating } = bestCourseById;
 
