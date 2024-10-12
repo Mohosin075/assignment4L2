@@ -53,6 +53,10 @@ const changePassword = async (
 ) => {
   const user = await User.findById(userData._id).select("+password");
 
+  if(!user){
+    throw new Error('User is not found!')
+  }
+
   const isPasswordMatched = await bcrypt.compare(
     payload.currentPassword,
     user?.password as string
@@ -62,15 +66,32 @@ const changePassword = async (
     throw new Error(`Password is incorrect!`);
   }
 
+
+  const passwordReused = await user?.checkPasswordReduce(payload.newPassword);
+
+  if(passwordReused){
+    throw new Error(`"Password change failed. Ensure the new password is unique and not among the last 2 used (last used on 2023-01-01 at 12:00 PM)."`)
+  }
+
+
+
   const hashedPass = await bcrypt.hash(
     payload.newPassword,
     Number(config.salt_round)
   );
 
+
   const updatedDoc = await User.findByIdAndUpdate(
     user?._id,
     {
       password: hashedPass,
+      passwordHistory : [
+        {
+          password: hashedPass,
+          changeAt: new Date(),
+        },
+        ...user?.passwordHistory?.slice(0,2)
+      ]
     },
     {
       new: true,
