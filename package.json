@@ -1,8 +1,8 @@
 {
   "scripts": {
-    "start:prod": "node ./dist/server.js",
-    "start:dev": "ts-node-dev --respawn --transpile-only ./src/server.ts",
-    "build": "tsc"
+    "start:prod": "node init && node ./dist/server.js",
+    "start:dev": "node init && ts-node-dev --respawn --transpile-only ./src/server.ts",
+    "build": "node init && tsc"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.1",
@@ -18,6 +18,7 @@
     "express": "^4.19.2",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.6.0",
+    "node-fetch": "^3.3.2",
     "ts-node-dev": "^2.0.0",
     "zod": "^3.23.8"
   }

@@ -25,7 +25,7 @@ export type TCourse = {
 };
 
 export type TMeta = {
-  limit: number;
-  page: number;
-  total: number;
+  limit?: number;
+  page?: number;
+  total?: number;
 };
